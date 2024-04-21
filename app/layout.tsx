@@ -16,7 +16,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="m-2 mt-4 flex justify-center px-4 lg:px-24">
+          <a href="/" className="rounded border-black border-2 p-2 m-1">Home</a>
+          <a href="/bill-splitter" className="rounded border-black border-2 p-2 m-1">Bill Splitter</a>
+          <a href="/budget-rater" className="rounded border-black border-2 p-2 m-1">Budget Rater</a>
+        </div>
+      <div className="m-2 mt-4 flex justify-center px-4 lg:px-24">
+      {children}
+      </div>
+      </body>
     </html>
   );
 }
