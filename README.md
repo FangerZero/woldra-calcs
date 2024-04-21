@@ -2,12 +2,16 @@
 calculators for finances
 
 ## Financial calculators
+This application will consist of calculators relating to financials. This is a front end application only, there is no back end so everything is stored to the client's machine. 
 
 ### Bill Splitter
 Split bills up with a date range, allow payees to have their own date ranges.
 
 ### Budget Rater
 Will Rate your budget
+
+### Tech Stack
+React and Tailwind
 
 ### Setting up GitHub
 1. Download and install Git
