@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Form from "./form";
 
 export const metadata: Metadata = {
     title: "Woldra Calculators - Budget Rater",
@@ -9,6 +10,7 @@ export default function BudgetRater() {
     return (
         <main>
             Budget Rater
+            <Form />
         </main>
     )
 }

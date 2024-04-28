@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-function from() {
+export default function from() {
   const blankTennent = {name: "", startDate: new Date(), endDate: new Date(), bill: 0, dayPercent: 0};
   const [tennentList, setTennentList] = useState([blankTennent]);
   const [bill, setBill] = useState({amount: 0.00, startDate: new Date(), endDate: new Date()});
@@ -145,5 +145,3 @@ function from() {
     </div>
   );
 }
-
-export default from;
