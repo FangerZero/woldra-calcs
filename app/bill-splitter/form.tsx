@@ -120,8 +120,8 @@ export default function from() {
 
   return (
     <div className="from">
-        <div className="pb-4 px-1">      
-            <TextField id="bill-amt" label="Bill Amount" value={bill.amount} variant="outlined" onChange={e => {setBill({...bill, amount: e.target.value})}}/>
+        <div className="pb-4">      
+            <TextField id="bill-amt" label="Utility Amount" value={bill.amount} variant="outlined" onChange={e => {setBill({...bill, amount: e.target.value})}}/>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker className="px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(bill.startDate)} onChange={newVal => setBill({...bill, startDate: newVal})} />
                 <DatePicker className="px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(bill.endDate)} onChange={newVal => setBill({...bill, endDate: newVal})} />
@@ -135,13 +135,15 @@ export default function from() {
               <DatePicker className="px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.startDate)} onChange={newVal => updateTennent(index, newVal, "startDate")} />
               <DatePicker className="px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.endDate)} onChange={newVal => updateTennent(index, newVal, "endDate")} />
             </LocalizationProvider>
-            <TextField disabled id="tennent-bill" className="px-1" label="bill" value={tennent.bill} variant="outlined" />
+            <TextField disabled id="tennent-bill" className="px-1" label="Share Amount" value={tennent.bill} variant="outlined" />
             {tennentList.length > 1 && <RemoveCircleOutline onClick={() => removeTennent(index)} />}
             {index === (tennentList.length - 1) && <AddCircleOutline onClick={addTennent} />}
         </div>
         );
       })}
-      <button onClick={splitBill} className="rounded border-black border-2 p-2 m-1">Submit</button>
+      <div className="m-2 mt-4 flex justify-center px-4 lg:px-24">
+        <button onClick={splitBill} className="items-center justify-center rounded border-black border-2 p-2">Submit</button>
+      </div>
     </div>
   );
 }
