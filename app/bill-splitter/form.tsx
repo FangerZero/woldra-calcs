@@ -121,23 +121,23 @@ export default function from() {
   return (
     <div className="from">
         <div className="pb-4">      
-            <TextField id="bill-amt" label="Utility Amount" value={bill.amount} variant="outlined" onChange={e => {setBill({...bill, amount: e.target.value})}}/>
+            <TextField className="my-2 lg:my-0"  id="bill-amt" label="Utility Amount" value={bill.amount} variant="outlined" onChange={e => {setBill({...bill, amount: e.target.value})}}/>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker className="px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(bill.startDate)} onChange={newVal => setBill({...bill, startDate: newVal})} />
-                <DatePicker className="px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(bill.endDate)} onChange={newVal => setBill({...bill, endDate: newVal})} />
+                <DatePicker className="my-2 lg:my-0 lg:px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(bill.startDate)} onChange={newVal => setBill({...bill, startDate: newVal})} />
+                <DatePicker className="my-2 lg:my-0 lg:px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(bill.endDate)} onChange={newVal => setBill({...bill, endDate: newVal})} />
             </LocalizationProvider>
         </div>
       {tennentList.map((tennent, index) => {
         return (
-          <div key={index} className="py-1">
-            <TextField id="tennent-name" label="Name" value={tennent.name} variant="outlined" onChange={e => updateTennent(index, e.target.value, "name")}/>
+          <div key={index} className="my-2 lg:my-0 lg:py-1">
+            <TextField className="my-2 lg:my-0" id="tennent-name" label="Name" value={tennent.name} variant="outlined" onChange={e => updateTennent(index, e.target.value, "name")}/>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker className="px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.startDate)} onChange={newVal => updateTennent(index, newVal, "startDate")} />
-              <DatePicker className="px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.endDate)} onChange={newVal => updateTennent(index, newVal, "endDate")} />
+              <DatePicker className="my-2 lg:my-0 lg:px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.startDate)} onChange={newVal => updateTennent(index, newVal, "startDate")} />
+              <DatePicker className="my-2 lg:my-0 lg:px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.endDate)} onChange={newVal => updateTennent(index, newVal, "endDate")} />
             </LocalizationProvider>
-            <TextField disabled id="tennent-bill" className="px-1" label="Share Amount" value={tennent.bill} variant="outlined" />
-            {tennentList.length > 1 && <RemoveCircleOutline onClick={() => removeTennent(index)} />}
-            {index === (tennentList.length - 1) && <AddCircleOutline onClick={addTennent} />}
+            <TextField disabled id="tennent-bill" className="my-2 lg:my-0 lg:px-1" label="Share Amount" value={tennent.bill} variant="outlined" />
+            {tennentList.length > 1 && <RemoveCircleOutline className="my-2 lg:my-0" onClick={() => removeTennent(index)} />}
+            {index === (tennentList.length - 1) && <AddCircleOutline className="my-2 lg:my-0" onClick={addTennent} />}
         </div>
         );
       })}
