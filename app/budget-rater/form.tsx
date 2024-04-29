@@ -61,7 +61,7 @@ export default function from() {
     }
 
   return (
-    <div className="from">
+    <div className="lg:mx-64">
         <TextField id="income-amt" className="m-2" label="Take Home" value={income} variant="outlined" onChange={e => {setIncome(+e.target.value)}}/>
         <div className="lg:my-2 lg:flex">
             <div className="mx-2">
@@ -78,7 +78,7 @@ export default function from() {
             </div>
         </div>
         <div className="my-2">
-            The Budget Rater is to help you get to the 50/20/30 rule. The goal is your bills are about 50% of your take home pay, while you save 20%, and spend the rest guilt free. 
+        The Budget Rater is to help you get to the 50/20/30 rule. The goal is your bills are about 50% of your take home pay, while you save 20%, and spend the rest guilt free. 
         </div>
     </div>
   );

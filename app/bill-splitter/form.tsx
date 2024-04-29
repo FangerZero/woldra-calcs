@@ -119,7 +119,7 @@ export default function from() {
   }
 
   return (
-    <div className="from">
+    <div>
         <div className="pb-4">      
             <TextField className="my-2 lg:my-0"  id="bill-amt" label="Utility Amount" value={bill.amount} variant="outlined" onChange={e => {setBill({...bill, amount: e.target.value})}}/>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -135,7 +135,7 @@ export default function from() {
               <DatePicker className="my-2 lg:my-0 lg:px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.startDate)} onChange={newVal => updateTennent(index, newVal, "startDate")} />
               <DatePicker className="my-2 lg:my-0 lg:px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.endDate)} onChange={newVal => updateTennent(index, newVal, "endDate")} />
             </LocalizationProvider>
-            <TextField disabled id="tennent-bill" className="my-2 lg:my-0 lg:px-1" label="Share Amount" value={tennent.bill} variant="outlined" />
+            <TextField disabled id="tennent-bill" className="my-2 lg:my-0 lg:px-1" label="Bill Amount" value={tennent.bill} variant="outlined" />
             {tennentList.length > 1 && <RemoveCircleOutline className="my-2 lg:my-0" onClick={() => removeTennent(index)} />}
             {index === (tennentList.length - 1) && <AddCircleOutline className="my-2 lg:my-0" onClick={addTennent} />}
         </div>
