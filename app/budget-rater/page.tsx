@@ -9,7 +9,6 @@ export const metadata: Metadata = {
 export default function BudgetRater() {
     return (
         <main>
-            Budget Rater
             <Form />
         </main>
     )
