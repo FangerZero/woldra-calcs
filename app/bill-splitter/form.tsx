@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-export default function from() {
+export default function Form() {
   const blankTennent = {name: "", startDate: new Date(), endDate: new Date(), bill: 0, dayPercent: 0};
   const [tennentList, setTennentList] = useState([blankTennent]);
   const [bill, setBill] = useState({amount: 0.00, startDate: new Date(), endDate: new Date()});
@@ -45,7 +45,7 @@ export default function from() {
     setTennentList(finalTennentList);
   }
 
-  const getTennentPayment = (tenPercent, sumOfTennentsPercent, billAmount) => {
+  const getTennentPayment = (tenPercent: number, sumOfTennentsPercent: number, billAmount: number) => {
     //  Tennent Pay = Tennent % * (billAmount / (Sum of Tennent %))
     return roundToHundredth(tenPercent * (billAmount / sumOfTennentsPercent));
   }
@@ -54,11 +54,11 @@ export default function from() {
   //============================
   // Utilities
   //============================
-  function roundToHundredth(number) {
-    return Math.round(number * 100) / 100;
+  function roundToHundredth(num: number) {
+    return Math.round(num * 100) / 100;
   }
 
-  function compareDesc(a, b) {
+  function compareDesc(a: any, b: any) {
     if (a.dayPercent > b.dayPercent) {
       return -1;
     } else if (a.dayPercent < b.dayPercent) {
@@ -72,16 +72,16 @@ export default function from() {
   //============================
   const day = (1000 * 60 * 60 * 24);
 
-  const datePercentOfStay = (tenStart, tenEnd, fullDays) => {
+  const datePercentOfStay = (tenStart: Date, tenEnd: Date, fullDays: number) => {
     return dateDeltaAddOne(tenStart, tenEnd)/fullDays;
   }
 
-  const dateDelta = (startDate, endDate) =>  {
+  const dateDelta = (startDate: any, endDate: any) =>  {
     return Math.round((endDate - startDate) / day);
   }
   
-  const dateDeltaAddOne = (startDate, endDate) =>  {
-    return dateDelta(startDate, endDate) + 1;
+  const dateDeltaAddOne = (startDate: Date, endDate: Date) =>  {
+    return dateDelta(+startDate, +endDate) + 1;
   }
 
   //============================
@@ -91,7 +91,7 @@ export default function from() {
     setTennentList([...tennentList, blankTennent]);
   }
 
-  const updateTennent = (index, val, type) => {
+  const updateTennent = (index: number, val: any, type: string) => {
     let newTennentList = tennentList;
     switch(type.toLowerCase()) {
       case "startdate":
@@ -112,7 +112,7 @@ export default function from() {
     setTennentList([...newTennentList]);
   }
 
-  const removeTennent = (index) => {
+  const removeTennent = (index: number) => {
     let newTennentList = [...tennentList];
     newTennentList.splice(index, 1);
     setTennentList(newTennentList);
@@ -121,10 +121,10 @@ export default function from() {
   return (
     <div>
         <div className="pb-4">      
-            <TextField className="my-2 lg:my-0"  id="bill-amt" label="Utility Amount" value={bill.amount} variant="outlined" onChange={e => {setBill({...bill, amount: e.target.value})}}/>
+            <TextField className="my-2 lg:my-0"  id="bill-amt" label="Utility Amount" value={bill.amount} variant="outlined" onChange={e => {setBill({...bill, amount: +e.target.value})}}/>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker className="my-2 lg:my-0 lg:px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(bill.startDate)} onChange={newVal => setBill({...bill, startDate: newVal})} />
-                <DatePicker className="my-2 lg:my-0 lg:px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(bill.endDate)} onChange={newVal => setBill({...bill, endDate: newVal})} />
+                <DatePicker className="my-2 lg:my-0 lg:px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(bill.startDate)} onChange={newVal => setBill({...bill, startDate: newVal ? newVal.toDate() : new Date()})} />
+                <DatePicker className="my-2 lg:my-0 lg:px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(bill.endDate)} onChange={newVal => setBill({...bill, endDate: newVal ? newVal.toDate() : new Date()})} />
             </LocalizationProvider>
         </div>
       {tennentList.map((tennent, index) => {

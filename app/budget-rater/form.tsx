@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 
 import { useState } from 'react';
 
-export default function from() {
+export default function Form() {
     const [income, setIncome] = useState(0.00);
     const [bill, setBill] = useState({amount: 0.00, percent: 0});
     const [save, setSave] = useState({amount: 0.00, percent: 0});
@@ -56,8 +56,8 @@ export default function from() {
     //============================
     // Utilities
     //============================
-    const roundToHundredth = (number) => {
-        return Math.round(number * 100) / 100;
+    const roundToHundredth = (num: number) => {
+        return Math.round(num * 100) / 100;
     }
 
   return (
