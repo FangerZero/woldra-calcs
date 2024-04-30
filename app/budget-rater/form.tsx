@@ -30,7 +30,7 @@ export default function Form() {
                 }
                 break;
             case "spend":
-                if (spend.percent < 10) {
+                if (spend.percent < 10 || save.percent < 20) {
                     return "text-orange-400";
                 }
                 break;
