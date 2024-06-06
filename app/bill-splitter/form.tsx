@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
+import { AddCircleOutline, CalendarMonth, RemoveCircleOutline } from '@mui/icons-material';
 
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -118,6 +118,12 @@ export default function Form() {
     setTennentList([...newTennentList]);
   }
 
+  const updateTennentWithBillDates = (index: number) => {
+    updateTennent(index, bill.startDate, "startDate"); 
+    updateTennent(index, bill.endDate, "endDate");
+
+  }
+
   const removeTennent = (index: number) => {
     let newTennentList = [...tennentList];
     newTennentList.splice(index, 1);
@@ -136,6 +142,7 @@ export default function Form() {
       {tennentList.map((tennent, index) => {
         return (
           <div key={index} className="my-2 lg:my-0 lg:py-1">
+            <CalendarMonth onClick={() => updateTennentWithBillDates(index)} />
             <TextField className="my-2 lg:my-0" id="tennent-name" label="Name" value={tennent.name} variant="outlined" onChange={e => updateTennent(index, e.target.value, "name")}/>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker className="my-2 lg:my-0 lg:px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.startDate)} onChange={newVal => updateTennent(index, newVal, "startDate")} />
