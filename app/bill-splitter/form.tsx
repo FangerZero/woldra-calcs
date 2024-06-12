@@ -16,7 +16,7 @@ export default function Form() {
 
   const splitBill = () => {
     const billDays = dateDeltaAddOne(bill.startDate, bill.endDate);
-    const newTennentList = tennentList.map(tennent => {return {...tennent, bill: 0, dayPercent: datePercentOfStay(tennent.startDate, tennent.endDate, billDays)}});
+    const newTennentList = tennentList.map(tennent => {return {...tennent, bill: 0, dayPercent: datePercentOfStay(tennent.startDate, tennent.endDate, billDays, bill.startDate, bill.endDate)}});
     const sumOfTennentsPercent = newTennentList.reduce((accumulator, tennent) => accumulator + tennent.dayPercent, 0);
     let finalTennentList = newTennentList.map(tennent => {return {...tennent, bill: getTennentPayment(tennent.dayPercent, sumOfTennentsPercent, +bill.amount)}});
     const billTotal = roundToHundredth(finalTennentList.reduce((accumulator, tennent) => accumulator + tennent.bill, 0));
@@ -78,8 +78,11 @@ export default function Form() {
   //============================
   const day = (1000 * 60 * 60 * 24);
 
-  const datePercentOfStay = (tenStart: Date, tenEnd: Date, fullDays: number) => {
-    return dateDeltaAddOne(tenStart, tenEnd)/fullDays;
+  const datePercentOfStay = (tenStart: Date, tenEnd: Date, fullDays: number, billStart: Date, billEnd: Date) => {
+    //return dateDeltaAddOne(tenStart, tenEnd)/fullDays;
+    const start = tenStart < billStart ? billStart : tenStart;
+    const end = tenEnd > billEnd ? billEnd : tenEnd;
+    return dateDeltaAddOne(start, end)/fullDays;
   }
 
   const dateDelta = (startDate: any, endDate: any) =>  {
@@ -114,7 +117,6 @@ export default function Form() {
         break; 
       default:
     }
-    // console.log('newTennentList: ', newTennentList);
     setTennentList([...newTennentList]);
   }
 
