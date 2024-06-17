@@ -79,7 +79,6 @@ export default function Form() {
   const day = (1000 * 60 * 60 * 24);
 
   const datePercentOfStay = (tenStart: Date, tenEnd: Date, fullDays: number, billStart: Date, billEnd: Date) => {
-    //return dateDeltaAddOne(tenStart, tenEnd)/fullDays;
     const start = tenStart < billStart ? billStart : tenStart;
     const end = tenEnd > billEnd ? billEnd : tenEnd;
     return dateDeltaAddOne(start, end)/fullDays;
@@ -102,6 +101,10 @@ export default function Form() {
 
   const updateTennent = (index: number, val: any, type: string) => {
     let newTennentList = tennentList;
+    if (index < 2) {
+      console.log('tennetList', tennentList);
+    }
+   
     switch(type.toLowerCase()) {
       case "startdate":
         newTennentList[index] = {...newTennentList[index], startDate: new Date(val)};

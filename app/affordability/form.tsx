@@ -1,10 +1,10 @@
 "use client"
 import TextField from '@mui/material/TextField';
-import Slider from '@mui/material/Slider';
-import Typography from '@mui/material/Typography';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 
 import { useState } from 'react';
@@ -14,22 +14,36 @@ export default function Form() {
     const [income, setIncome] = useState(0.00);
     const [expenses, setExpenses] = useState(1000.00);
     const [downPayment, setdownPayment] = useState(0);
-    const [interest, setInterest] = useState(2400);
-    const [tax, setTax] = useState(0);
-    const [insurance, setInsurance] = useState(0.00);
+    const [interest, setInterest] = useState(7);
+    const [tax, setTax] = useState(2);
+    const [insurance, setInsurance] = useState(2400);
     const [hoa, setHoa] = useState(0.00);
-    const [payments, setPayments] = useState(360);
-
+    const [loanTerm, setLoanTerm] = useState(360);
+    
     const getMonthlyPayment = () => {
-        return (income / 2) - expenses;
-    }
+        const payment = (income / 2) - expenses;
+        return payment > 0 ? roundToHundredth(payment) : 0;
+    };
+
+    const getLoanAmt = () => {
+        // Math.pow(x, y);
+        const monthlyPayment = getMonthlyPayment();
+        const i = (interest / 100) / 12;
+        const x = Math.pow((1+i), loanTerm);
+        const h = insurance / 12;
+
+        const top = 12 * monthlyPayment - insurance;
+        const bottomTop = i * x;
+        const bottomBottom = x - 1;
+        const bottom = (12 * (bottomTop / bottomBottom)) + (tax/100);
+
+        const loan = roundToHundredth(top/bottom);
+
+        return loan > 0 ? loan : 0;
+    };
 
     /*
-        we determined the final monthly payment
-        We next need to determine Insurnace cost in regards to monthly payment
-            NewMonthly = MonthlyPayment - (Insurance / 12)
-        
-        Monthly Payment = (P (I(1+I)^N) / ((1+I)^N-1) ) + (P (T/12)) +(H/12) + A
+        Monthly Payment = (P (I(1+I)^N) / ((1+I)^N-1) ) + (P (T/12)) + (H/12) + A
         P - Principal
         I - Interest
         N - Amount of Payments
@@ -37,11 +51,27 @@ export default function Form() {
         H - Home Insurance
         A - Monthly HoA Dues
     */
+   
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: number,
+  ) => {
+    setLoanTerm(newAlignment);
+  };
+  
+  //============================
+  // Utilities
+  //============================
+  function roundToHundredth(num: number) {
+    return Math.round(num * 100) / 100;
+  }
 
   return (
    <div className="lg:mx-64">
         <div className='my-4'>
-            This uses the 50/20/30 rule (Expenses/Savings/Wants)
+            This uses the 50/20/30 rule (Expenses/Savings/Wants) 
+            <br />
+            PMI is  missing
         </div>
         <div className="flex flex-row">
             <div className="flex flex-col">
@@ -52,6 +82,17 @@ export default function Form() {
                 <TextField id="tax-rate" className="m-2" label="Tax Rate" value={tax} variant="outlined" onChange={e => {setTax(+e.target.value)}}/>
                 <TextField id="ins-amt" className="m-2" label="Insurance" value={insurance} variant="outlined" onChange={e => {setInsurance(+e.target.value)}}/>
                 <TextField id="hoa-amt" className="m-2" label="Home Owner Association" value={hoa} variant="outlined" onChange={e => {setHoa(+e.target.value)}}/>
+                <ToggleButtonGroup
+                    className="m-2"
+                    color="primary"
+                    value={loanTerm}
+                    exclusive
+                    onChange={handleChange}
+                    aria-label="Platform"
+                    >
+                    <ToggleButton value="180">15 Years</ToggleButton>
+                    <ToggleButton value="360">30 Years</ToggleButton>
+                </ToggleButtonGroup>
             </div>
             <div className="ml-16">
                 Monthly Payment 
@@ -62,7 +103,9 @@ export default function Form() {
                 </Tooltip>
                 <div className="mb-4">${getMonthlyPayment()}</div>
                 Loan Amount
-                <div className="mb-4">$</div>
+                <div className="mb-4">${getLoanAmt()}</div>
+                House Price
+                <div className="mb-4">${roundToHundredth(getLoanAmt()+downPayment)}</div>
             </div>
         </div>
     </div>

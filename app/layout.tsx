@@ -21,10 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="m-2 mt-4 flex justify-center px-4 lg:px-24">
-          <Link href="/" className="rounded border-black border-2 p-2 pr-4 m-1"><AttachMoneyOutlined className="mx-2"/>Home</Link>
+          <Link href="/" className="rounded border-black border-2 p-2 pr-4 m-1"><HomeOutlined className="mx-2"/>Home</Link>
           <Link href="/bill-splitter" className="rounded border-black border-2 p-2 pr-4 m-1"><PaymentsOutlined className="mx-2"/> Bill Splitter</Link>
           <Link href="/budget-rater" className="rounded border-black border-2 p-2 pr-4 m-1"><AccountBalanceWalletOutlined className="mx-2"/>Budget Rater</Link>
-          <Link href="/affordability" className="rounded border-black border-2 p-2 pr-4 m-1"><HomeOutlined className="mx-2"/>Affordability</Link>
+          <Link href="/affordability" className="rounded border-black border-2 p-2 pr-4 m-1"><AttachMoneyOutlined className="mx-2"/>Affordability</Link>
         </div>
       <div className="m-2 mt-4 flex justify-center px-4 lg:px-24">
       {children}
