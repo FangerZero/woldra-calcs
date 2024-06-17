@@ -11,31 +11,31 @@ import { useState } from 'react';
 
 export default function Form() {
     const [incomePercent, setIncomePercent] = useState(25);
-    const [income, setIncome] = useState(0.00);
+    const [income, setIncome] = useState("0.00");
     const [expenses, setExpenses] = useState(1000.00);
     const [downPayment, setdownPayment] = useState(0);
-    const [interest, setInterest] = useState(7);
-    const [tax, setTax] = useState(2);
+    const [interest, setInterest] = useState("7.0");
+    const [tax, setTax] = useState("2.0");
     const [insurance, setInsurance] = useState(2400);
     const [hoa, setHoa] = useState(0.00);
     const [loanTerm, setLoanTerm] = useState(360);
     
     const getMonthlyPayment = () => {
-        const payment = (income / 2) - expenses;
+        const payment = (+income / 2) - expenses;
         return payment > 0 ? roundToHundredth(payment) : 0;
     };
 
     const getLoanAmt = () => {
         // Math.pow(x, y);
         const monthlyPayment = getMonthlyPayment();
-        const i = (interest / 100) / 12;
+        const i = (+interest / 100) / 12;
         const x = Math.pow((1+i), loanTerm);
         const h = insurance / 12;
 
         const top = 12 * monthlyPayment - insurance;
         const bottomTop = i * x;
         const bottomBottom = x - 1;
-        const bottom = (12 * (bottomTop / bottomBottom)) + (tax/100);
+        const bottom = (12 * (bottomTop / bottomBottom)) + (+tax/100);
 
         const loan = roundToHundredth(top/bottom);
 
@@ -75,11 +75,11 @@ export default function Form() {
         </div>
         <div className="flex flex-row">
             <div className="flex flex-col">
-                <TextField id="income-amt" className="m-2" label="Monthly Take Home" value={income} variant="outlined" onChange={e => {setIncome(+e.target.value)}}/>
+                <TextField id="income-amt" className="m-2" label="Monthly Take Home" value={income} variant="outlined" onChange={e => {setIncome(e.target.value)}}/>
                 <TextField id="live-exp" className="m-2" label="Living Expenses" value={expenses} variant="outlined" onChange={e => {setExpenses(+e.target.value)}}/>
                 <TextField id="down-pay" className="m-2" label="Down Payment" value={downPayment} variant="outlined" onChange={e => {setdownPayment(+e.target.value)}}/>
-                <TextField id="int-rate" className="m-2" label="Interest Rate" value={interest} variant="outlined" onChange={e => {setInterest(+e.target.value)}}/>
-                <TextField id="tax-rate" className="m-2" label="Tax Rate" value={tax} variant="outlined" onChange={e => {setTax(+e.target.value)}}/>
+                <TextField id="int-rate" className="m-2" label="Interest Rate" value={interest} variant="outlined" onChange={e => {setInterest(e.target.value)}}/>
+                <TextField id="tax-rate" className="m-2" label="Tax Rate" value={tax} variant="outlined" onChange={e => {setTax(e.target.value)}}/>
                 <TextField id="ins-amt" className="m-2" label="Insurance" value={insurance} variant="outlined" onChange={e => {setInsurance(+e.target.value)}}/>
                 <TextField id="hoa-amt" className="m-2" label="Home Owner Association" value={hoa} variant="outlined" onChange={e => {setHoa(+e.target.value)}}/>
                 <ToggleButtonGroup
