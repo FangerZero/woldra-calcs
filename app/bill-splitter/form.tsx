@@ -96,7 +96,7 @@ export default function Form() {
   // Tennents
   //============================
   const addTennent = () => {
-    setTennentList([...tennentList, blankTennent]);
+    setTennentList([...tennentList, {...blankTennent, startDate: bill.startDate, endDate: bill.endDate}]);
   }
 
   const updateTennent = (index: number, val: any, type: string) => {
