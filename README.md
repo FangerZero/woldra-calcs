@@ -35,15 +35,17 @@ React and Tailwind
 1. Visit the URL and login
 1. `firebase init hosting`
 	1. Type `out` to `What do you want to use as your public directory?`
-	1. Hit N to `Configure as a single-page app (rewrite all urls to /index.html)?`
-	1. Hit N to `Set up automatic builds and deployes with GitHub?`
-1. firebase deploy --only hosting
+	1. Hit `N` to `Configure as a single-page app (rewrite all urls to /index.html)?`
+	1. Hit `N` to `Set up automatic builds and deployes with GitHub?`
+1. `firebase deploy --only hosting`
 
 
 ### 1+ Runs
-`npm run build`
+Once Firebase is setup 
+1. `npm run build`
+1. `firebase deploy --only hosting` or `firebase deploy`
 
-`firebase deploy --only hosting`
+---
 
 
 
