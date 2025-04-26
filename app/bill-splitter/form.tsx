@@ -9,12 +9,17 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import Download from './pdf/download';
+// import Viewer from './pdf/viewer';
+
 export default function Form() {
+  const [submitted, setSubmitted] = useState(false);
   const blankTennent = {name: "", startDate: new Date(), endDate: new Date(), bill: 0, dayPercent: 0};
   const [tennentList, setTennentList] = useState([blankTennent]);
   const [bill, setBill] = useState({amount: "0.00", startDate: new Date(), endDate: new Date()});
 
   const splitBill = () => {
+    setSubmitted(true);
     const billDays = dateDeltaAddOne(bill.startDate, bill.endDate);
     const newTennentList = tennentList.map(tennent => {return {...tennent, bill: 0, dayPercent: datePercentOfStay(tennent.startDate, tennent.endDate, billDays, bill.startDate, bill.endDate)}});
     const sumOfTennentsPercent = newTennentList.reduce((accumulator, tennent) => accumulator + tennent.dayPercent, 0);
@@ -101,10 +106,7 @@ export default function Form() {
 
   const updateTennent = (index: number, val: any, type: string) => {
     let newTennentList = tennentList;
-    if (index < 2) {
-      console.log('tennetList', tennentList);
-    }
-   
+       
     switch(type.toLowerCase()) {
       case "startdate":
         newTennentList[index] = {...newTennentList[index], startDate: new Date(val)};
@@ -161,7 +163,14 @@ export default function Form() {
       })}
       <div className="m-2 mt-4 flex justify-center px-4 lg:px-24">
         <button onClick={splitBill} className="items-center justify-center rounded border-black border-2 p-2">Submit</button>
+        {submitted && <Download data={{bill, tennentList}} />}
       </div>
     </div>
   );
 }
+/*
+
+      <div className="m-2 mt-4 flex justify-center px-4 lg:px-24">
+        <Viewer data={{bill, tennentList}} />
+      </div>
+*/
