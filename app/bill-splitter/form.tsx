@@ -35,7 +35,8 @@ export default function Form() {
         if (leftOverPennies === 0) {
           break;
         }
-        const foundIndex = finalTennentList.findIndex(tennent => tennent.name === currentTennent[1].name)
+        const currentTennentName = currentTennent[1].name ? currentTennent[1].name : undefined;
+        const foundIndex = finalTennentList.findIndex(tennent => tennent.name === currentTennentName)
         if (leftOverPennies > 0) {
           finalTennentList[foundIndex] = {...currentTennent[1], bill: currentTennent[1].bill + .01};
           leftOverPennies--;

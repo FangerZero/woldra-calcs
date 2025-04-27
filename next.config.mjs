@@ -2,9 +2,7 @@
 const nextConfig = {
     output: 'export', // SPA only no Server Side rendering
 
-  experimental: {
-    serverComponentsExternalPackages: ['@react-pdf/renderer'],
-  },
+    serverExternalPackages: ['@react-pdf/renderer'],
 };
 
 export default nextConfig;
