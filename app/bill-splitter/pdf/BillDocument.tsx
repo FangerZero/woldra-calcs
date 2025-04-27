@@ -25,7 +25,7 @@ const BillDocument = ({data}: any) => {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.billSection}>
-          <Text>{formatPayment(bill.amount)} split between {tennentList.length} people.</Text>
+          <Text>{formatPayment(bill.amount)} split between {tennentList.length} people, between {new Intl.DateTimeFormat("en-US").format(bill.startDate)}-{new Intl.DateTimeFormat("en-US").format(bill.endDate)}.</Text>
         </View>
         <View style={styles.tennentSection}>
           {tennentList.map((tennent: { name: string; bill: number; startDate: Date; endDate: Date;}, key: number) => {
