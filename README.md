@@ -37,6 +37,8 @@ React and Tailwind
 	1. Type `out` to `What do you want to use as your public directory?`
 	1. Hit `N` to `Configure as a single-page app (rewrite all urls to /index.html)?`
 	1. Hit `N` to `Set up automatic builds and deployes with GitHub?`
+	1. Hit `N` to `File out/404.html already exists. Overwrite?`
+	1. Hit `N` to `File out/index.html already exists. Overwrite?`
 1. `firebase deploy --only hosting`
 
 
