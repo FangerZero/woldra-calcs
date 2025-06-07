@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { AddCircleOutline, CalendarMonth, RemoveCircleOutline } from '@mui/icons-material';
 
@@ -18,8 +18,13 @@ export default function Form() {
   const [tennentList, setTennentList] = useState([blankTennent]);
   const [bill, setBill] = useState({amount: "0.00", startDate: new Date(), endDate: new Date()});
 
-  const splitBill = () => {
-    setSubmitted(true);
+  useEffect(() => {
+    if (submitted) {
+      setSubmitted(false); 
+    }
+  }, [tennentList]);
+
+  const splitBill = async () => {
     const billDays = dateDeltaAddOne(bill.startDate, bill.endDate);
     const newTennentList = tennentList.map(tennent => {return {...tennent, bill: 0, dayPercent: datePercentOfStay(tennent.startDate, tennent.endDate, billDays, bill.startDate, bill.endDate)}});
     const sumOfTennentsPercent = newTennentList.reduce((accumulator, tennent) => accumulator + tennent.dayPercent, 0);
@@ -48,7 +53,8 @@ export default function Form() {
       } 
       
     }
-    setTennentList(finalTennentList);
+    await setTennentList(finalTennentList);
+    setSubmitted(true); // Must be last because of useEffect()
   }
 
   const getTennentPayment = (tenPercent: number, sumOfTennentsPercent: number, billAmount: number) => {
