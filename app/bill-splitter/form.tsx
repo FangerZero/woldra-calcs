@@ -24,19 +24,29 @@ export default function Form() {
     }
   }, [tennentList]);
 
+
+  const isValidDate = (date: Date) => {
+    return date instanceof Date && !isNaN(date.getTime());
+  };
+
   const splitBill = async () => {
     const billDays = dateDeltaAddOne(bill.startDate, bill.endDate);
     const newTennentList = tennentList.map(tennent => {return {...tennent, bill: 0, dayPercent: datePercentOfStay(tennent.startDate, tennent.endDate, billDays, bill.startDate, bill.endDate)}});
     const sumOfTennentsPercent = newTennentList.reduce((accumulator, tennent) => accumulator + tennent.dayPercent, 0);
     let finalTennentList = newTennentList.map(tennent => {return {...tennent, bill: getTennentPayment(tennent.dayPercent, sumOfTennentsPercent, +bill.amount)}});
     const billTotal = roundToHundredth(finalTennentList.reduce((accumulator, tennent) => accumulator + tennent.bill, 0));
+    let invalidDate = false;
 
     if (billTotal !== +bill.amount) {
       let sortedTennentList = finalTennentList.toSorted(compareDesc);
       let leftOverPennies = roundToHundredth(+bill.amount - billTotal) * 100;
       const iterator = sortedTennentList.entries();
       let currentTennent = iterator.next().value;
+      
       while(currentTennent !== undefined) {
+        if(!isValidDate(currentTennent[1].startDate) || !isValidDate(currentTennent[1].startDate)) {
+          invalidDate = true;
+        }
         if (leftOverPennies === 0) {
           break;
         }
@@ -51,7 +61,9 @@ export default function Form() {
         }
         currentTennent = iterator.next().value;
       } 
-      
+    }
+    if (invalidDate) {
+      return;
     }
     await setTennentList(finalTennentList);
     setSubmitted(true); // Must be last because of useEffect()

@@ -18,6 +18,13 @@ const formatPayment = (payment: number) => {
     );
   };
 
+const checkAndFormatDate = (date: Date) => {
+  if(date instanceof Date && !isNaN(date.getTime())) {
+    return new Intl.DateTimeFormat("en-US").format(date);
+  }
+  return "Issue with Date";
+};
+
 const BillDocument = ({data}: any) => {
   const {bill, tennentList} = data;
 
@@ -32,7 +39,7 @@ const BillDocument = ({data}: any) => {
             return (
               <View  key={key} style={(key % 2) ? styles.oddLine : styles.evenLine }>
                 <Text style={styles.tennentName}>{tennent.name}</Text>
-                <Text style={styles.tennentDates}>{new Intl.DateTimeFormat("en-US").format(tennent.startDate)}-{new Intl.DateTimeFormat("en-US").format(tennent.endDate)}</Text>
+                <Text style={styles.tennentDates}>{checkAndFormatDate(tennent.startDate)}-{checkAndFormatDate(tennent.endDate)}</Text>
                 <Text style={styles.tennentBill}>{formatPayment(tennent.bill)}</Text>
               </View>
             );
