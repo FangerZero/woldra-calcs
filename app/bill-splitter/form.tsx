@@ -14,15 +14,15 @@ import Download from './pdf/download';
 
 export default function Form() {
   const [submitted, setSubmitted] = useState(false);
-  const blankTennent = {name: "", startDate: new Date(), endDate: new Date(), bill: 0, dayPercent: 0};
-  const [tennentList, setTennentList] = useState([blankTennent]);
+  const blankTenant = {name: "", startDate: new Date(), endDate: new Date(), bill: 0, dayPercent: 0};
+  const [tenantList, setTenantList] = useState([blankTenant]);
   const [bill, setBill] = useState({amount: "0.00", startDate: new Date(), endDate: new Date()});
 
   useEffect(() => {
     if (submitted) {
       setSubmitted(false); 
     }
-  }, [tennentList]);
+  }, [tenantList]);
 
 
   const isValidDate = (date: Date) => {
@@ -31,47 +31,47 @@ export default function Form() {
 
   const splitBill = async () => {
     const billDays = dateDeltaAddOne(bill.startDate, bill.endDate);
-    const newTennentList = tennentList.map(tennent => {return {...tennent, bill: 0, dayPercent: datePercentOfStay(tennent.startDate, tennent.endDate, billDays, bill.startDate, bill.endDate)}});
-    const sumOfTennentsPercent = newTennentList.reduce((accumulator, tennent) => accumulator + tennent.dayPercent, 0);
-    let finalTennentList = newTennentList.map(tennent => {return {...tennent, bill: getTennentPayment(tennent.dayPercent, sumOfTennentsPercent, +bill.amount)}});
-    const billTotal = roundToHundredth(finalTennentList.reduce((accumulator, tennent) => accumulator + tennent.bill, 0));
+    const newTenantList = tenantList.map(tenant => {return {...tenant, bill: 0, dayPercent: datePercentOfStay(tenant.startDate, tenant.endDate, billDays, bill.startDate, bill.endDate)}});
+    const sumOfTenantsPercent = newTenantList.reduce((accumulator, tenant) => accumulator + tenant.dayPercent, 0);
+    let finalTenantList = newTenantList.map(tenant => {return {...tenant, bill: getTenantPayment(tenant.dayPercent, sumOfTenantsPercent, +bill.amount)}});
+    const billTotal = roundToHundredth(finalTenantList.reduce((accumulator, tenant) => accumulator + tenant.bill, 0));
     let invalidDate = false;
 
     if (billTotal !== +bill.amount) {
-      let sortedTennentList = finalTennentList.toSorted(compareDesc);
+      let sortedTenantList = finalTenantList.toSorted(compareDesc);
       let leftOverPennies = roundToHundredth(+bill.amount - billTotal) * 100;
-      const iterator = sortedTennentList.entries();
-      let currentTennent = iterator.next().value;
+      const iterator = sortedTenantList.entries();
+      let currentTenant = iterator.next().value;
       
-      while(currentTennent !== undefined) {
-        if(!isValidDate(currentTennent[1].startDate) || !isValidDate(currentTennent[1].startDate)) {
+      while(currentTenant !== undefined) {
+        if(!isValidDate(currentTenant[1].startDate) || !isValidDate(currentTenant[1].startDate)) {
           invalidDate = true;
         }
         if (leftOverPennies === 0) {
           break;
         }
-        const currentTennentName = currentTennent[1].name ? currentTennent[1].name : undefined;
-        const foundIndex = finalTennentList.findIndex(tennent => tennent.name === currentTennentName)
+        const currentTenantName = currentTenant[1].name ? currentTenant[1].name : undefined;
+        const foundIndex = finalTenantList.findIndex(tenant => tenant.name === currentTenantName)
         if (leftOverPennies > 0) {
-          finalTennentList[foundIndex] = {...currentTennent[1], bill: currentTennent[1].bill + .01};
+          finalTenantList[foundIndex] = {...currentTenant[1], bill: currentTenant[1].bill + .01};
           leftOverPennies--;
         } else if (leftOverPennies < 0) {
-          finalTennentList[foundIndex] = {...currentTennent[1], bill: currentTennent[1].bill - .01};
+          finalTenantList[foundIndex] = {...currentTenant[1], bill: currentTenant[1].bill - .01};
           leftOverPennies++;
         }
-        currentTennent = iterator.next().value;
+        currentTenant = iterator.next().value;
       } 
     }
     if (invalidDate) {
       return;
     }
-    await setTennentList(finalTennentList);
+    await setTenantList(finalTenantList);
     setSubmitted(true); // Must be last because of useEffect()
   }
 
-  const getTennentPayment = (tenPercent: number, sumOfTennentsPercent: number, billAmount: number) => {
-    //  Tennent Pay = Tennent % * (billAmount / (Sum of Tennent %))
-    return roundToHundredth(tenPercent * (billAmount / sumOfTennentsPercent));
+  const getTenantPayment = (tenPercent: number, sumOfTenantsPercent: number, billAmount: number) => {
+    //  Tenant Pay = Tenant % * (billAmount / (Sum of Tenant %))
+    return roundToHundredth(tenPercent * (billAmount / sumOfTenantsPercent));
   }
 
   const formatPayment = (payment: number) => {
@@ -117,43 +117,43 @@ export default function Form() {
   }
 
   //============================
-  // Tennents
+  // Tenants
   //============================
-  const addTennent = () => {
-    setTennentList([...tennentList, {...blankTennent, startDate: bill.startDate, endDate: bill.endDate}]);
+  const addTenant = () => {
+    setTenantList([...tenantList, {...blankTenant, startDate: bill.startDate, endDate: bill.endDate}]);
   }
 
-  const updateTennent = (index: number, val: any, type: string) => {
-    let newTennentList = tennentList;
+  const updateTenant = (index: number, val: any, type: string) => {
+    let newTenantList = tenantList;
        
     switch(type.toLowerCase()) {
       case "startdate":
-        newTennentList[index] = {...newTennentList[index], startDate: new Date(val)};
+        newTenantList[index] = {...newTenantList[index], startDate: new Date(val)};
         break;
       case "enddate":
-        newTennentList[index] = {...newTennentList[index], endDate: new Date(val)};
+        newTenantList[index] = {...newTenantList[index], endDate: new Date(val)};
         break;
       case "name":
-        newTennentList[index] = {...newTennentList[index], name: val};
+        newTenantList[index] = {...newTenantList[index], name: val};
         break; 
       case "bill":
-        newTennentList[index] = {...newTennentList[index], bill: val};
+        newTenantList[index] = {...newTenantList[index], bill: val};
         break; 
       default:
     }
-    setTennentList([...newTennentList]);
+    setTenantList([...newTenantList]);
   }
 
-  const updateTennentWithBillDates = (index: number) => {
-    updateTennent(index, bill.startDate, "startDate"); 
-    updateTennent(index, bill.endDate, "endDate");
+  const updateTenantWithBillDates = (index: number) => {
+    updateTenant(index, bill.startDate, "startDate"); 
+    updateTenant(index, bill.endDate, "endDate");
 
   }
 
-  const removeTennent = (index: number) => {
-    let newTennentList = [...tennentList];
-    newTennentList.splice(index, 1);
-    setTennentList(newTennentList);
+  const removeTenant = (index: number) => {
+    let newTenantList = [...tenantList];
+    newTenantList.splice(index, 1);
+    setTenantList(newTenantList);
   }
 
   return (
@@ -165,24 +165,24 @@ export default function Form() {
                 <DatePicker className="my-2 lg:my-0 lg:px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(bill.endDate)} onChange={newVal => setBill({...bill, endDate: newVal ? newVal.toDate() : new Date()})} />
             </LocalizationProvider>
         </div>
-      {tennentList.map((tennent, index) => {
+      {tenantList.map((tenant, index) => {
         return (
           <div key={index} className="my-2 lg:my-0 lg:py-1">
-            <CalendarMonth onClick={() => updateTennentWithBillDates(index)} />
-            <TextField className="my-2 lg:my-0" id="tennent-name" label="Name" value={tennent.name} variant="outlined" onChange={e => updateTennent(index, e.target.value, "name")}/>
+            <CalendarMonth onClick={() => updateTenantWithBillDates(index)} />
+            <TextField className="my-2 lg:my-0" id="tenant-name" label="Name" value={tenant.name} variant="outlined" onChange={e => updateTenant(index, e.target.value, "name")}/>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker className="my-2 lg:my-0 lg:px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.startDate)} onChange={newVal => updateTennent(index, newVal, "startDate")} />
-              <DatePicker className="my-2 lg:my-0 lg:px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(tennent.endDate)} onChange={newVal => updateTennent(index, newVal, "endDate")} />
+              <DatePicker className="my-2 lg:my-0 lg:px-1" label="Start Date" defaultValue={dayjs(new Date())} value={dayjs(tenant.startDate)} onChange={newVal => updateTenant(index, newVal, "startDate")} />
+              <DatePicker className="my-2 lg:my-0 lg:px-1" label="End Date" defaultValue={dayjs(new Date())} value={dayjs(tenant.endDate)} onChange={newVal => updateTenant(index, newVal, "endDate")} />
             </LocalizationProvider>
-            <TextField disabled id="tennent-bill" className="my-2 lg:my-0 lg:px-1" label="Bill Amount" value={formatPayment(tennent.bill)} variant="outlined" />
-            {tennentList.length > 1 && <RemoveCircleOutline className="my-2 lg:my-0" onClick={() => removeTennent(index)} />}
-            {index === (tennentList.length - 1) && <AddCircleOutline className="my-2 lg:my-0" onClick={addTennent} />}
+            <TextField disabled id="tenant-bill" className="my-2 lg:my-0 lg:px-1" label="Bill Amount" value={formatPayment(tenant.bill)} variant="outlined" />
+            {tenantList.length > 1 && <RemoveCircleOutline className="my-2 lg:my-0" onClick={() => removeTenant(index)} />}
+            {index === (tenantList.length - 1) && <AddCircleOutline className="my-2 lg:my-0" onClick={addTenant} />}
         </div>
         );
       })}
       <div className="m-2 mt-4 flex justify-center px-4 lg:px-24">
         <button onClick={splitBill} className="items-center justify-center rounded border-black border-2 p-2">Submit</button>
-        {submitted && <Download data={{bill, tennentList}} />}
+        {submitted && <Download data={{bill, tenantList}} />}
       </div>
     </div>
   );
@@ -190,6 +190,6 @@ export default function Form() {
 /*
 
       <div className="m-2 mt-4 flex justify-center px-4 lg:px-24">
-        <Viewer data={{bill, tennentList}} />
+        <Viewer data={{bill, tenantList}} />
       </div>
 */
