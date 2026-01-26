@@ -4,12 +4,12 @@ import { Document, Page, View, Text, StyleSheet } from '@react-pdf/renderer';
 const styles = StyleSheet.create({
     page: { backgroundColor: 'white' },
     billSection: { color: 'black', textAlign: 'center', margin: 20 },
-    tennentSection: { color: 'white', textAlign: 'left', marginHorizontal: 100, },
+    tenantSection: { color: 'white', textAlign: 'left', marginHorizontal: 100, },
     evenLine: {backgroundColor: 'gray', paddingHorizontal: 25, paddingVertical: 5, flexDirection: 'row'},
     oddLine: {color: 'black', backgroundColor: 'lightgray', paddingHorizontal: 25, paddingVertical: 5, flexDirection: 'row'},
-    tennentName: {fontWeight: 'bold', textAlign: 'left'},
-    tennentDates: {paddingHorizontal: 10, width: '75%'},
-    tennentBill: {paddingHorizontal: 10, textAlign: 'right'}
+    tenantName: {fontWeight: 'bold', textAlign: 'left'},
+    tenantDates: {paddingHorizontal: 10, width: '75%'},
+    tenantBill: {paddingHorizontal: 10, textAlign: 'right'}
   });
 
 const formatPayment = (payment: number) => {
@@ -26,21 +26,21 @@ const checkAndFormatDate = (date: Date) => {
 };
 
 const BillDocument = ({data}: any) => {
-  const {bill, tennentList} = data;
+  const {bill, tenantList} = data;
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.billSection}>
-          <Text>{formatPayment(bill.amount)} split between {tennentList.length} people, between {new Intl.DateTimeFormat("en-US").format(bill.startDate)}-{new Intl.DateTimeFormat("en-US").format(bill.endDate)}.</Text>
+          <Text>{formatPayment(bill.amount)} split between {tenantList.length} people, between {new Intl.DateTimeFormat("en-US").format(bill.startDate)}-{new Intl.DateTimeFormat("en-US").format(bill.endDate)}.</Text>
         </View>
-        <View style={styles.tennentSection}>
-          {tennentList.map((tennent: { name: string; bill: number; startDate: Date; endDate: Date;}, key: number) => {
+        <View style={styles.tenantSection}>
+          {tenantList.map((tenant: { name: string; bill: number; startDate: Date; endDate: Date;}, key: number) => {
             return (
               <View  key={key} style={(key % 2) ? styles.oddLine : styles.evenLine }>
-                <Text style={styles.tennentName}>{tennent.name}</Text>
-                <Text style={styles.tennentDates}>{checkAndFormatDate(tennent.startDate)}-{checkAndFormatDate(tennent.endDate)}</Text>
-                <Text style={styles.tennentBill}>{formatPayment(tennent.bill)}</Text>
+                <Text style={styles.tenantName}>{tenant.name}</Text>
+                <Text style={styles.tenantDates}>{checkAndFormatDate(tenant.startDate)}-{checkAndFormatDate(tenant.endDate)}</Text>
+                <Text style={styles.tenantBill}>{formatPayment(tenant.bill)}</Text>
               </View>
             );
           })}
